@@ -15,14 +15,6 @@ from oscar.core.loading import get_class, get_classes, get_model
 
 from . import signals
 
-# Drop try catch once we no longer need to support Django 1.8. This will be
-# when it's no longer the LTS release
-try:
-    from django.contrib.auth.mixins import LoginRequiredMixin
-except ImportError:
-    from oscar.views.auth_mixins import LoginRequiredMixin
-
-
 ShippingAddressForm, ShippingMethodForm, GatewayForm \
     = get_classes('checkout.forms', ['ShippingAddressForm', 'ShippingMethodForm', 'GatewayForm'])
 OrderCreator = get_class('order.utils', 'OrderCreator')
@@ -202,8 +194,7 @@ class ShippingAddressView(CheckoutSessionMixin, generic.FormView):
         return super(ShippingAddressView, self).form_valid(form)
 
 
-class UserAddressUpdateView(
-        LoginRequiredMixin, CheckoutSessionMixin, generic.UpdateView):
+class UserAddressUpdateView(CheckoutSessionMixin, generic.UpdateView):
     """
     Update a user address
     """
@@ -224,8 +215,7 @@ class UserAddressUpdateView(
         return super(UserAddressUpdateView, self).get_success_url()
 
 
-class UserAddressDeleteView(
-        LoginRequiredMixin, CheckoutSessionMixin, generic.DeleteView):
+class UserAddressDeleteView(CheckoutSessionMixin, generic.DeleteView):
     """
     Delete an address from a user's address book.
     """
